@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Christopher Diehl&#39;s blog</title>
+    <link>https://christopherdiehl.github.io/posts/</link>
+    <description>Recent content in Posts on Christopher Diehl&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>&amp;copy; &lt;a href=&#34;https://github.com/christopherdiehl&#34;&gt;Christopher Diehl&lt;/a&gt; 2018</copyright>
+    <lastBuildDate>Tue, 27 Feb 2018 08:57:09 -0500</lastBuildDate>
+    
+	<atom:link href="https://christopherdiehl.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>My First Post</title>
+      <link>https://christopherdiehl.github.io/posts/my-first-post/</link>
+      <pubDate>Tue, 27 Feb 2018 08:57:09 -0500</pubDate>
+      
+      <guid>https://christopherdiehl.github.io/posts/my-first-post/</guid>
+      <description>One of my resolutions going into 2018 was to blog more about the technical problems I run into, in the hopes it helps someone else. Things have been incredibly busy this year, but I finally got around to migrating my blog to Hugo so expect to see more content focused on the Node, React, and Golang ecosystems!</description>
+    </item>
+    
+  </channel>
+</rss>
