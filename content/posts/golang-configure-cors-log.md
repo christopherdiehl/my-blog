@@ -12,8 +12,9 @@ I recently ran into some CORS issues while creating a REST API in Go. Because I 
 For those who don't know CORS stands for Cross Origin Resource Sharing. It's essentially a mechanism for restricting access to a resource from a server of a different origin. Sounds straightforward right? In reality it's pretty complex, and I'd recommend reading more about it on [Mozilla's site](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) before reading the takeways.
 
 The key takeaways of CORS for an API developer are as follows:
-- CORS Pre-Flight is triggered on any requests with a *content-type* or *authorization* header
-- If you run into CORS Pre-Flight, an OPTIONS request will be sent to your API .
+
+* CORS Pre-Flight is triggered on any requests with a *content-type* or *authorization* header
+* If you run into CORS Pre-Flight, an OPTIONS request will be sent to your API .
 
 This means that using a Gorilla mux router in Golang, unless you specifically handle the OPTIONS request, you will get an error code. Most likely `405`.
 
