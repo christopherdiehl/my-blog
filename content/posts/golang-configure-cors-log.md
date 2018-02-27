@@ -1,7 +1,7 @@
 ---
 title: "Golang Configure Cors Log"
 date: 2018-02-27T16:45:26-05:00
-draft: true
+draft: false
 ---
 
 # Intro 
