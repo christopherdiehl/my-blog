@@ -1,0 +1,45 @@
+baseurl = "https://christopherdiehl.github.io/"
+languageCode = "en"
+title = "Christopher Diehl's blog"
+theme = "kiss"
+copyright = "&copy; <a href=\"https://github.com/christopherdiehl\">Christopher Diehl</a> 2018"
+googleAnalytics = ""
+# Number of posts per page
+Paginate = 5
+enableRobotsTXT = true
+
+
+[params.assets]
+customCSS = ["css/custom.css"]
+
+[params.info]
+adsense = "" # Adsense ID (ID only, without ca-pub-)
+enableSocial = true # Adds OpenGraph and Twitter cards
+homeTitle = "" # Title for home page
+poweredby = true # Adds powered by hugo and kiss below Copyright
+#related = true # Includes related articles at the bottom of the article
+
+
+#[params.opengraph.facebook]
+#admins = [] # array of Facebook IDs
+#appID = ""
+#pageID = ""
+
+#[params.opengraph.twitter]
+#page = "" # Twitter Page username. If not set, params.social.twitter will be used.
+
+[params.social]
+
+#twitter = "ribicemir"
+github = "christopherdiehl"
+email = "diehl.chris24@gmail.com"
+linkedin = "christopher-diehl-73a44795"
+#facebook = "ribice"
+#instagram = ""
+#codepen = ""
+
+#[taxonomies]
+#tag ="tags"
+
+#[blackfriday]
+#hrefTargetBlank = true
