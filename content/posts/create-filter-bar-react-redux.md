@@ -75,3 +75,64 @@ export {
 };
 ```
 
+If you notice, the actual filtering is being performed in this line:
+`(contactDomain, keyword) => contactDomain.get('contacts').filter((contact) => contact.name.toLowerCase.includes(keyword.toLowerCase()))`
+
+There really isn't any magic happening, just a simple `filter` function and comparing the contact's name to the keyword. Please note the above filter is not case sensitive, to make it case sensitive, just remove the `.toLowerCase()`
+
+## Component
+
+Now we just need to wire up the component. The finished product, barring imports should look something like below:
+
+```
+
+export class Contacts extends React.Component { // eslint-disable-line react/prefer-stateless-function
+    render() {
+        return (
+            <Paper style={{ minHeight: '70vh', padding: '15px 30px 30px 30px' }}>
+                <Toolbar style={{ background: "white", width: '100%' }}>
+                    <ToolbarGroup >
+                        <h3>Contacts</h3>
+                    </ToolbarGroup>
+                    <ToolbarGroup>
+                        <TextField
+                            floatingLabelText="Search"
+                            id="text-field-controlled"
+                            value={this.props.contacts.searchKey}
+                            onChange={this.props.updateSearchKey}
+                        />
+                        <RaisedButton
+                            label="Add"
+                            primary={true}
+                            onClick={(user) => this.setState({ selectedUser: { 'name': '', notes: '', 'email': '', phoneNumber: '', location: '' } })}
+                        />
+                    </ToolbarGroup>
+                </Toolbar>
+                <hr />
+                <ContactList
+                    contacts={this.props.filteredContacts}
+                    onClick={(user) => this.setState({ selectedUser: user })}
+                />
+            </Paper>
+        );
+    }
+}
+
+Contacts.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  filteredContacts: PropTypes.array.isRequired,
+};
+
+const mapStateToProps = createStructuredSelector({
+  filteredContacts: selectFilteredContacts(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+    updateSearchKey: (e) => dispatch(updateSearchKey(e.target.value)),
+  };
+}
+```
+
+## Voila, enjoy.
