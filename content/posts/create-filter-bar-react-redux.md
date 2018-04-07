@@ -135,4 +135,6 @@ function mapDispatchToProps(dispatch) {
 }
 ```
 
-## Voila, enjoy.
+## Enjoy.
+
+You should now have a fully working filter bar. Hope you enjoyed the article
