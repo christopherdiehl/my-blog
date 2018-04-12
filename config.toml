@@ -3,7 +3,7 @@ languageCode = "en"
 title = "Christopher Diehl's blog"
 theme = "kiss"
 copyright = "&copy; <a href=\"https://github.com/christopherdiehl\">Christopher Diehl</a> 2018"
-googleAnalytics = ""
+googleAnalytics = "UA-117461087-1"
 # Number of posts per page
 Paginate = 5
 enableRobotsTXT = true
