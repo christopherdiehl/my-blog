@@ -1,7 +1,11 @@
 ---
-title: "Golang Configure Cors REST API"
+title: Golang Configure Cors REST API
 date: 2018-02-27T16:45:26-05:00
 draft: false
+keywords:
+- golang
+- cors
+- REST API
 ---
 
 # Intro 

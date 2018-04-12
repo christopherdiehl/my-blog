@@ -2,6 +2,11 @@
 title: "Create Filter Bar React Redux Reselect"
 date: 2018-03-13T07:49:00-04:00
 draft: false
+keywords:
+- react
+- redux
+- reselect
+- filter
 ---
 
 # Intro
