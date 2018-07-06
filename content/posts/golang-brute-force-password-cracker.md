@@ -11,7 +11,7 @@ keywords:
 # Golang Password Cracker
 
 ### Disclaimer
-All views and opinions expressed in this document are my own and not indicative of my employer's viewpoints in any regard. Furthermore, this exercise is intended to demonstrate the need for more robust passwords internally. The created program should not be used for anything malicious.
+All views and opinions expressed in this document are my own and not indicative of my employer's viewpoints in any regard. Furthermore, this exercise is intended to demonstrate the need for more robust passwords. The created program should not be used for anything malicious.
 
 ### Password Security & Best Practices
 [Krebs Take](https://krebsonsecurity.com/password-dos-and-donts/)
