@@ -1,6 +1,4 @@
 ---
-pages:
-- posts/caesar-cypher.md
 hide_body: false
 is_partial: false
 fields:
@@ -19,3 +17,6 @@ fields:
   type: boolean
   hidden: false
   default: true
+pages:
+- content/posts/golang-brute-force-password-cracker.md
+- content/posts/caesar-cypher.md
