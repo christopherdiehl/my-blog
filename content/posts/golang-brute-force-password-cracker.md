@@ -29,6 +29,7 @@ To build this program, let's use Golang because it's simple, fast, and excels in
 1. Create a folder in your golang directory (wherever you specified it) called `golang-brute-password`
 1. Move the password file to the folder, call it `passwords.txt`
 1. Create file main.go with the following
+  
    ``` 
    package main
 
@@ -52,8 +53,8 @@ To build this program, let's use Golang because it's simple, fast, and excels in
       }
    ```
 1. Now we need a function to actually make the POST request to the specified url. Try this:
+   
    ```
-
    // postToURL
    // Succeeded = true if res.status == 200
    func postToURL(url string, username string, password string) (succeeded bool) {
