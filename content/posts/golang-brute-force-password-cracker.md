@@ -125,8 +125,6 @@ To build this program, let's use Golang because it's simple, fast, and excels in
       - Enforce strict password requirements. 8 characters + and 2 complexity cases
 1. By processing each request or rate limiting the client, a server makes itself exceptionally vulnerable to DDOS. For those who don't know Krebs did a great writeup on DDOS [here](https://krebsonsecurity.com/tag/ddos/).
 
-# How ya'll enjoyed the talk 
-
 ## Ps. our final program should look like this:
 
 ```
