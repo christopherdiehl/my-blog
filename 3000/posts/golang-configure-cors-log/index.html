@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en" >
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+    <title>Golang Configure Cors REST API | Christopher Diehl&#39;s blog</title>
+     <meta property='og:title' content='Golang Configure Cors REST API - Christopher Diehl&#39;s blog'>
+<meta property='og:description' content='Intro I recently ran into some CORS issues while creating a REST API in Go. Because I spend the bulk of my time programming in JavaScript, I had at first assumed there would be an easy catch all CORS package that I could configure and never think about again. Then I remembered that part of Go&rsquo;s beauty is it&rsquo;s standard library, so I decided to solve the problem by myself, and while doing so learned a lot about HTTP and CORS.'>
+<meta property='og:url' content='http://localhost:1313/posts/golang-configure-cors-log/'>
+<meta property='og:site_name' content='Christopher Diehl&#39;s blog'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/d4d89f2829ede1e53ab179550c2a472f?s=256'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2018-02-27T16:45:26-05:00'/><meta property='article:modified_time' content='2018-02-27T16:45:26-05:00'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+    <meta content="golang , cors , REST API" name="keywords">
+
+    <link rel="stylesheet" href="http://localhost:1313//css/style.css" /><link rel='stylesheet' href='/css/custom.css'></head>
+
+<body>
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="http://localhost:1313/"><h1 class="title is-4">Christopher Diehl&#39;s blog</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile"><a class="level-item" href='mailto:diehl.chris24@gmail.com' target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" href='https://github.com/christopherdiehl' target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" href='https://linkedin.com/in/christopher-diehl-73a44795' target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="subtitle is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">February 27, 2018</h2>
+    <h1 class="title">Golang Configure Cors REST API</h1>
+    
+    <div class="content">
+      
+
+<h1 id="intro">Intro</h1>
+
+<p>I recently ran into some CORS issues while creating a REST API in Go. Because I spend the bulk of my time programming in JavaScript, I had at first assumed there would be an easy catch all CORS package that I could configure and never think about again. Then I remembered that part of Go&rsquo;s beauty is it&rsquo;s standard library, so I decided to solve the problem by myself, and while doing so learned a lot about HTTP and CORS.</p>
+
+<h1 id="background">Background</h1>
+
+<p>For those who don&rsquo;t know CORS stands for Cross Origin Resource Sharing. It&rsquo;s essentially a mechanism for restricting access to a resource from a server of a different origin. Sounds straightforward right? In reality it&rsquo;s pretty complex, and I&rsquo;d recommend reading more about it on <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">Mozilla&rsquo;s site</a> before reading the takeways.</p>
+
+<p>The key takeaways of CORS for an API developer are as follows:</p>
+
+<ul>
+<li>CORS Pre-Flight is triggered on any requests with a <em>content-type</em> or <em>authorization</em> header</li>
+<li>If you run into CORS Pre-Flight, an OPTIONS request will be sent to your API .</li>
+</ul>
+
+<p>This means that using a Gorilla mux router in Golang, unless you specifically handle the OPTIONS request, you will get an error code. Most likely <code>405</code>.</p>
+
+<h1 id="how-to-handle-the-cors-requests-in-golang">How to handle the CORS requests in Golang</h1>
+
+<p>The following function sets the neccessary headers in the response to enable CORS. The comments explain each header.</p>
+
+<pre><code>
+func setHeaders(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        //anyone can make a CORS request (not recommended in production)
+		w.Header().Set(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;)
+        //only allow GET, POST, and OPTIONS
+		w.Header().Set(&quot;Access-Control-Allow-Methods&quot;, &quot;GET, POST, OPTIONS&quot;)
+        //Since I was building a REST API that returned JSON, I set the content type to JSON here.
+		w.Header().Set(&quot;Content-Type&quot;, &quot;application/json&quot;)
+        //Allow requests to have the following headers
+		w.Header().Set(&quot;Access-Control-Allow-Headers&quot;, &quot;Origin, Content-Type, Authorization, cache-control&quot;)
+        //if it's just an OPTIONS request, nothing other than the headers in the response is needed.
+        //This is essential because you don't need to handle the OPTIONS requests in your handlers now
+		if r.Method == &quot;OPTIONS&quot; {
+			return
+		}
+
+		h.ServeHTTP(w, r)
+	})
+}
+</code></pre>
+
+<p>With Gorilla mux router, you can use this for all requests by doing the following:</p>
+
+<p><code>http.ListenAndServe(&quot;:3333&quot;, setHeaders(myMuxRouter))</code></p>
+
+<p>Hope you enjoyed and are now able to handle that pesky CORS mechanism in Golang!</p>
+
+      
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/christopherdiehl">Christopher Diehl</a> 2018</p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
+    
+  </div>
+</section>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-117461087-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+</html>

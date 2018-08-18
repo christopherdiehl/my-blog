@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en" >
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+    <title>Dynamically passing in ENV vars to Lambda functions created by Cloudformation | Christopher Diehl&#39;s blog</title>
+     <meta property='og:title' content='Dynamically passing in ENV vars to Lambda functions created by Cloudformation - Christopher Diehl&#39;s blog'>
+<meta property='og:description' content='Background I&rsquo;m going to assume you have experience with Lambda, AWS-SAM, and Cloudformation. To start with you should already have a template.yml for Cloudformation that looks alot like this:
+--- AWSTemplateFormatVersion: &#39;2010-09-09&#39; Transform: AWS::Serverless-2016-10-31 Description: AWS template Resources: ApiGatewayApi: Type: AWS::Serverless::Api Properties: StageName: Prod # Allows www.example.com to call these APIs # SAM will automatically add AllowMethods with a list of methods for this API Cors: &quot;&#39;www.example.com&#39;&quot; DefinitionBody: &#39;Fn::Transform&#39;: Name: &#39;AWS::Include&#39; # Replace &lt;bucket&gt; with your bucket name Parameters: Location: s3://&lt;bucket&gt;/swagger.'>
+<meta property='og:url' content='http://localhost:1313/posts/lambda-sam-env-vars/'>
+<meta property='og:site_name' content='Christopher Diehl&#39;s blog'>
+<meta property='og:type' content='article'><meta property='og:image' content='https://www.gravatar.com/avatar/d4d89f2829ede1e53ab179550c2a472f?s=256'><meta property='article:section' content='Posts'><meta property='article:published_time' content='2018-08-17T14:16:20Z'/><meta property='article:modified_time' content='2018-08-17T14:16:20Z'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+    <meta content="" name="keywords">
+
+    <link rel="stylesheet" href="http://localhost:1313//css/style.css" /><link rel='stylesheet' href='/css/custom.css'></head>
+
+<body>
+<section class="section">
+  <div class="container">
+    <nav class="nav">
+      <div class="nav-left">
+        <a class="nav-item" href="http://localhost:1313/"><h1 class="title is-4">Christopher Diehl&#39;s blog</h1></a>
+      </div>
+      <div class="nav-right">
+        <nav class="nav-item level is-mobile"><a class="level-item" href='mailto:diehl.chris24@gmail.com' target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+    <polyline points="22,6 12,13 2,6"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" href='https://github.com/christopherdiehl' target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+    
+  </svg></i>
+            </span>
+          </a><a class="level-item" href='https://linkedin.com/in/christopher-diehl-73a44795' target='_blank' rel='noopener'>
+            <span class="icon">
+              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+    
+    <path stroke-width="1.8" d="m5.839218,4.101561c0,1.211972 -0.974141,2.194011 -2.176459,2.194011s-2.176459,-0.982039 -2.176459,-2.194011c0,-1.211094 0.974141,-2.194011 2.176459,-2.194011s2.176459,0.982917 2.176459,2.194011zm0.017552,3.94922l-4.388022,0l0,14.04167l4.388022,0l0,-14.04167zm7.005038,0l-4.359939,0l0,14.04167l4.360816,0l0,-7.370999c0,-4.098413 5.291077,-4.433657 5.291077,0l0,7.370999l4.377491,0l0,-8.89101c0,-6.915523 -7.829986,-6.66365 -9.669445,-3.259423l0,-1.891237z"/>
+    
+  </svg></i>
+            </span>
+          </a></nav>
+      </div>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="subtitle is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">August 17, 2018</h2>
+    <h1 class="title">Dynamically passing in ENV vars to Lambda functions created by Cloudformation</h1>
+    
+    <div class="content">
+      
+
+<h1 id="background">Background</h1>
+
+<p>I&rsquo;m going to assume you have experience with Lambda, <a href="https://github.com/awslabs/serverless-application-model">AWS-SAM</a>, and Cloudformation.
+To start with you should already have a <a href="https://github.com/awslabs/serverless-application-model/blob/master/examples/2016-10-31/api_swagger_cors/template.yaml">template.yml</a> for Cloudformation that looks alot like this:</p>
+
+<pre><code>---
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS template
+Resources:
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+
+      # Allows www.example.com to call these APIs
+      # SAM will automatically add AllowMethods with a list of methods for this API
+      Cors: &quot;'www.example.com'&quot;
+
+      DefinitionBody:
+          'Fn::Transform':
+            Name: 'AWS::Include'
+            # Replace &lt;bucket&gt; with your bucket name
+            Parameters:
+              Location: s3://&lt;bucket&gt;/swagger.yaml
+
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      # Replace &lt;bucket&gt; with your bucket name
+      CodeUri: s3://&lt;bucket&gt;/api_swagger_cors.zip
+      Handler: index.handler
+      Runtime: nodejs6.10
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /
+            Method: ANY
+        ProxyApiGreedy:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /{proxy+}
+            Method: ANY
+
+Outputs:
+  ApiUrl:
+    Description: URL of your API endpoint
+    Value: !Join
+      - ''
+      - - https://
+        - !Ref ApiGatewayApi
+        - '.execute-api.'
+        - !Ref 'AWS::Region'
+        - '.amazonaws.com/Prod'
+</code></pre>
+
+<p>There are two distinct approaches you can take to dynamically retrieve environment variables in Lambda. The approach you take is dictated by how frequently your variable changes.</p>
+
+<ol>
+<li>Your environment variable changes frequently.
+
+<ul>
+<li>I would recommend retrieving the variable from an external endpoint. We won&rsquo;t cover this use case in the blog post.</li>
+</ul></li>
+<li>Your environment variables is fairly static, but you don&rsquo;t want to hardcode the variable or make it public in a code repository.
+
+<ul>
+<li>Retrieving from AWS SSM parameter store as a string is the best option in my opinion.
+<br /></li>
+</ul></li>
+</ol>
+
+<hr />
+
+<h2 id="let-s-walk-through-method-2">Let&rsquo;s walk through method #2.</h2>
+
+<ol>
+<li>To get started, go to the <a href="https://console.aws.amazon.com/systems-manager/parameters?region=us-east-1">parameter store</a> and add the name of your environment variable, it&rsquo;s value and set the type to &ldquo;String&rdquo;.
+
+<ul>
+<li>Cloudformation doesn&rsquo;t support Secure String at the time of writing.</li>
+</ul></li>
+<li>Adjust your Cloudformation&rsquo;s role to be able to access the newly created parameter</li>
+<li>Add the parameter to the Cloudformation template via the following:
+
+<ul>
+<li><code>
+MyEnvVarParameterName:
+  Type: 'Aws::SSM::Parameter::Value&lt;String&gt;
+  Default: MyEnvParamaterNameSetInTheStore
+</code></li>
+</ul></li>
+<li>Add the parameter to you lambda function as an environment variable with the following:
+
+<ul>
+<li><code>
+MyLambdaEnvName:
+  Ref: MyEnvVarParameterName
+</code></li>
+</ul></li>
+<li>If you would like the environment variable to be hidden from view in the AWS Console then set NoEcho property to true.</li>
+</ol>
+
+<hr />
+
+<p>So your final version would look something like this:</p>
+
+<pre><code>---
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Template
+Parameters:
+  MyEnvParameterName:
+    Type: 'Aws::SSM::Parameter::Value&lt;String&gt;
+    Default: MyEnvParamaterNameSetInTheStore
+Resources:
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+
+      # Allows www.example.com to call these APIs
+      # SAM will automatically add AllowMethods with a list of methods for this API
+      Cors: &quot;'www.example.com'&quot;
+
+      DefinitionBody:
+          'Fn::Transform':
+            Name: 'AWS::Include'
+            # Replace &lt;bucket&gt; with your bucket name
+            Parameters:
+              Location: s3://&lt;bucket&gt;/swagger.yaml
+
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      # Replace &lt;bucket&gt; with your bucket name
+      CodeUri: s3://&lt;bucket&gt;/api_swagger_cors.zip
+      Handler: index.handler
+      Runtime: nodejs6.10
+      Environment:
+        Variables:
+          MyLambdaEnvName:
+            Ref: MyEnvParameterName
+      Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /
+            Method: ANY
+        ProxyApiGreedy:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGatewayApi
+            Path: /{proxy+}
+            Method: ANY
+
+Outputs:
+  ApiUrl:
+    Description: URL of your API endpoint
+    Value: !Join
+      - ''
+      - - https://
+        - !Ref ApiGatewayApi
+        - '.execute-api.'
+        - !Ref 'AWS::Region'
+        - '.amazonaws.com/Prod'
+</code></pre>
+
+      
+    </div>
+    
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container has-text-centered">
+    <p>&copy; <a href="https://github.com/christopherdiehl">Christopher Diehl</a> 2018</p>
+    
+      <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
+    
+  </div>
+</section>
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-117461087-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+<script data-no-instant>document.write('<script src="/livereload.js?port=1313&mindelay=10"></' + 'script>')</script></body>
+</html>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Christopher Diehl&#39;s blog</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on Christopher Diehl&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>&amp;copy; &lt;a href=&#34;https://github.com/christopherdiehl&#34;&gt;Christopher Diehl&lt;/a&gt; 2018</copyright>
+    <lastBuildDate>Fri, 17 Aug 2018 14:16:20 +0000</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Dynamically passing in ENV vars to Lambda functions created by Cloudformation</title>
+      <link>http://localhost:1313/posts/lambda-sam-env-vars/</link>
+      <pubDate>Fri, 17 Aug 2018 14:16:20 +0000</pubDate>
+      
+      <guid>http://localhost:1313/posts/lambda-sam-env-vars/</guid>
+      <description>Background I&amp;rsquo;m going to assume you have experience with Lambda, AWS-SAM, and Cloudformation. To start with you should already have a template.yml for Cloudformation that looks alot like this:
+--- AWSTemplateFormatVersion: &#39;2010-09-09&#39; Transform: AWS::Serverless-2016-10-31 Description: AWS template Resources: ApiGatewayApi: Type: AWS::Serverless::Api Properties: StageName: Prod # Allows www.example.com to call these APIs # SAM will automatically add AllowMethods with a list of methods for this API Cors: &amp;quot;&#39;www.example.com&#39;&amp;quot; DefinitionBody: &#39;Fn::Transform&#39;: Name: &#39;AWS::Include&#39; # Replace &amp;lt;bucket&amp;gt; with your bucket name Parameters: Location: s3://&amp;lt;bucket&amp;gt;/swagger.</description>
+    </item>
+    
+    <item>
+      <title>Creating a Brute Force REST API Password Cracker</title>
+      <link>http://localhost:1313/posts/golang-brute-force-password-cracker/</link>
+      <pubDate>Sun, 24 Jun 2018 07:49:00 -0400</pubDate>
+      
+      <guid>http://localhost:1313/posts/golang-brute-force-password-cracker/</guid>
+      <description>Golang Password Cracker Disclaimer All views and opinions expressed in this document are my own and not indicative of my employer&amp;rsquo;s viewpoints in any regard. Furthermore, this exercise is intended to demonstrate the need for more robust passwords. The created program should not be used for anything malicious.
+Password Security &amp;amp; Best Practices Krebs Take
+I&amp;rsquo;m sure we&amp;rsquo;ve all seen user accounts with shoddy passwords, to demonstrate how easy it is to gain access to these accounts let&amp;rsquo;s see if we can brute force their passwords.</description>
+    </item>
+    
+    <item>
+      <title>Create Filter Bar React Redux Reselect</title>
+      <link>http://localhost:1313/posts/create-filter-bar-react-redux/</link>
+      <pubDate>Tue, 13 Mar 2018 07:49:00 -0400</pubDate>
+      
+      <guid>http://localhost:1313/posts/create-filter-bar-react-redux/</guid>
+      <description>Intro I recently created a filter bar using the popular Reselect and Redux libraries in React. For this post, we&amp;rsquo;re going to create a filter bar in a standard contacts page, where the contacts will be filtered by individual&amp;rsquo;s name.
+Here is an example of how the contacts page will look with the filter.
+Reducer Setup First we need to create the reducer and the initial state of our application, let&amp;rsquo;s use Immutable.</description>
+    </item>
+    
+    <item>
+      <title>Golang Configure Cors REST API</title>
+      <link>http://localhost:1313/posts/golang-configure-cors-log/</link>
+      <pubDate>Tue, 27 Feb 2018 16:45:26 -0500</pubDate>
+      
+      <guid>http://localhost:1313/posts/golang-configure-cors-log/</guid>
+      <description>Intro I recently ran into some CORS issues while creating a REST API in Go. Because I spend the bulk of my time programming in JavaScript, I had at first assumed there would be an easy catch all CORS package that I could configure and never think about again. Then I remembered that part of Go&amp;rsquo;s beauty is it&amp;rsquo;s standard library, so I decided to solve the problem by myself, and while doing so learned a lot about HTTP and CORS.</description>
+    </item>
+    
+  </channel>
+</rss>
