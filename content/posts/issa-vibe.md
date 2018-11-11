@@ -11,7 +11,7 @@ keywords:
 
 # Building a music suggesting webapp in barebones Go
 
-For some additional background, the team I work with has a weekly *Talking Code* where one member talks about something they've worked on and would like to share with the group. Given my frequent use of Golang outside of work, I decided to make a web application that would randomly suggest a song given a genre. I also wanted to use as few libraries as possible to hide any package magic. For those who are interested in the code right away, feel free to check it out [here](https://github.com/christopherdiehl/issa-vibe)
+For some additional background, the team I work with has a weekly *Talking Code* where one member talks about something they've worked on and would like to share with the group. Given my interest in Golang outside of work, I decided to make a web application that would randomly suggest a song given a genre. I also wanted to use as few libraries as possible to hide any package magic. For those who are interested in the code right away, feel free to check it out [here](https://github.com/christopherdiehl/issa-vibe)
 
 
 ## Finished Product
