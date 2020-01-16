@@ -1,6 +1,6 @@
 ---
+label: default
 hide_body: false
-is_partial: false
 fields:
 - name: title
   label: Title
@@ -18,5 +18,5 @@ fields:
   hidden: false
   default: true
 pages:
+- content/posts/browser-fingerprinting.md
 - content/posts/golang-brute-force-password-cracker.md
-- content/posts/caesar-cypher.md
