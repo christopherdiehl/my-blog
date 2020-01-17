@@ -10,7 +10,7 @@ Browser fingerprinting is a great power, but unfortunately is not often used res
 
 ##### _How is browser fingerprinting done?_
 
-The  fingerprinting is most often done via the userAgent string inside the browser's navigator object, however the navigator object contains other useful properties such as the device's current geolocation and number of CPU cores. To view your navigator object, open the browser console and type in **_navigator_** and you should see something like what's below:
+The  fingerprinting is most often accomplished by viewing the userAgent string inside the browser's navigator object, however the navigator object contains other useful properties such as the device's current geolocation and number of CPU cores. To view your navigator object, open the browser console and type in **_navigator_** and you should see something like what's below:
 
     Navigator {vendorSub: "", productSub: "20030107", vendor: "Google Inc.", maxTouchPoints: 0, hardwareConcurrency: 4, …}
     vendorSub: ""
@@ -34,7 +34,7 @@ From the above a few things are obvious:
 1. I'm using a Macbook with v10.14.2
 2. I'm running Chrome
 3. I'm in the US
-4. Since my hardwareConcurrency is 4, I cannot be on a Macbook Air.
+4. Since my hardwareConcurrency is 4, I have a quad core CPU. Therefore, I cannot be on a Macbook Air.
 
 #####  _Burn the navigator!_
 
@@ -47,11 +47,11 @@ While the feature is still a proposal, the team is looking to freeze and remove 
 > 
 > On top of those privacy issues, User-Agent sniffing is an abundant source of compatibility issues, in particular for minority browsers, resulting in browsers lying about themselves (generally or to specific sites), and sites (including Google properties) being broken in some browsers for no good reason.
 
-It is important to note that the proposal would still have allow **active** browser fingerprinting. The key difference would be that all the information is sent to a server only if the server requests the information, whereas now the site can retrieve the information without the browser/ user being aware.
+It is important to note that the proposal would still have allow **active** browser fingerprinting. The migration to [User Agent Client Hints](https://www.google.com/url?q=https%3A%2F%2Fwicg.github.io%2Fua-client-hints%2F&sa=D&sntz=1&usg=AFQjCNGWrUbAKuA-kIHu0bnNrEN-n_BPAw "User Agent Client Hints") would result in all the information being sent to a server if only if the server requests the information, whereas now the site can retrieve the information without the browser/ user being aware.
 
 #####  _What can I do?_
 
-Unfortunately you cannot do terribly much at this point of time to avoid device fingerprinting other than disabling JavaScript or start using [Firefox](https://blog.mozilla.org/firefox/how-to-block-fingerprinting-with-firefox/ "Firefox avoids browser fingerprinting") . While I would highly recommend using Firefox, I would not recommend disabling JavaScript unless you wish half of the internet to be unusable in any meaningful way.
+Unfortunately you cannot do terribly much at this point of time to avoid device fingerprinting other than disabling JavaScript or start using [Firefox](https://blog.mozilla.org/firefox/how-to-block-fingerprinting-with-firefox/ "Firefox avoids browser fingerprinting") . While I would highly recommend using Firefox, I would not recommend disabling JavaScript unless you want half of the internet to be unusable in any meaningful way.
 
 ##### _Alternative Methods_
 
