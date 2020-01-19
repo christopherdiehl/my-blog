@@ -1,7 +1,7 @@
 +++
 date = "2020-01-19T14:16:20+00:00"
 title = "Browser Fingerprinting"
-tags = ["browser", "fingerprinting", "security", "privacy"]
+tags = ["browser fingerprinting", "security", "privacy"]
 keywords = ["browser fingerprinting", "privacy", "digital fingerprint"]
 +++
 #### _With great power comes great responsibility._
