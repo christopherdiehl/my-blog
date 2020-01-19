@@ -38,8 +38,8 @@ linkedin = "christopher-diehl-73a44795"
 #instagram = ""
 #codepen = ""
 
-#[taxonomies]
-#tag ="tags"
+[taxonomies]
+    tag ="tags"
 
 #[blackfriday]
 #hrefTargetBlank = true

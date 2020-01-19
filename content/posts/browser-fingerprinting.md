@@ -1,7 +1,8 @@
 +++
 date = "1/16/2020"
 title = "Browser Fingerprinting"
-
+tags = [browser, fingerprinting, security,privacy]
+keywords = [browser fingerprinting, privacy, digital fingerprint]
 +++
 #### _With great power comes great responsibility._
 

@@ -2,6 +2,8 @@
 date = "2018-08-17T14:16:20+00:00"
 draft = false
 title = "Dynamically passing in ENV vars to Lambda functions created by Cloudformation"
+keywords = [lambda, environment variables, cloudformation]
+tags = [infrastructure, configuration, lambda]
 +++
 
 # Background
