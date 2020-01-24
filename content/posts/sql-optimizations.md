@@ -59,7 +59,8 @@ To familarize yourself with the data, try to find the following:
 1. The number of distinct crime types
 1. Earliest reported_date in the data set.
 1. Crimes frequency by day of week
-
+1. Crimes that happen at night
+1. Crimes that happen during the day (8AM to 8 PM)
 ## Answers to Exploring the Data
 
 1. 60515 with query: `SELECT COUNT(*) FROM raleigh_police_incidents WHERE case_number is null;`
@@ -68,3 +69,19 @@ To familarize yourself with the data, try to find the following:
 SELECT COUNT(*) FROM  (SELECT DISTINCT crime_type  FROM raleigh_police_incidents WHERE crime_type IS NOT NULL GROUP BY crime_type) crime_types;
 ```
 1. 2014-06-1 04:15:00 `SELECT MIN(reported_date) from raleigh_police_incidents ;`
+1. 
+```
+ count | dayofweek 
+-------+-----------
+ 32011 |         0
+ 35514 |         1
+ 34620 |         2
+ 34515 |         3
+ 33850 |         4
+ 34820 |         5
+ 32900 |         6
+
+SELECT COUNT(*), EXTRACT(DOW from reported_date ) as dayOfWeek FROM raleigh_police_incidents GROUP BY dayOfWeek; 
+```
+1. 129256 `SELECT COUNT(*) FROM (select extract(hour from reported_date) as rhour from raleigh_police_incidents WHERE extract(hour from reported_date) > 7 AND extract(hour from reported_date) < 21) t;`
+1. 108974  `SELECT COUNT(*) FROM (select extract(hour from reported_date) as rhour from raleigh_police_incidents WHERE extract(hour from reported_date) < 8 OR extract(hour from reported_date) > 20) t;`
