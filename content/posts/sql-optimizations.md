@@ -1,8 +1,8 @@
 +++
 date = "2020-01-23T14:16:20+00:00"
-title = "SQL Optimizations"
+title = "Examining Raleigh's crime data using SQL"
 tags = ["sql","optimization", "Raleigh"]
-keywords = ["sql","optimization", "Raleigh"]
+keywords = ["sql optimization","sql explain analyze", "Raleigh crime data"]
 draft = true
 +++
 
