@@ -3,7 +3,7 @@ date = "2020-01-23T14:16:20+00:00"
 title = "Examining Raleigh's crime data using SQL"
 tags = ["sql","optimization", "Raleigh"]
 keywords = ["sql optimization","sql explain analyze", "Raleigh crime data"]
-draft = true
+draft = false
 +++
 
 ## SQL Optimizations on a Raleigh Crime Dataset.
