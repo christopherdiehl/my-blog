@@ -61,6 +61,7 @@ To familarize yourself with the data, try to find the following:
 1. Crimes frequency by day of week
 1. Crimes that happen at night
 1. Crimes that happen during the day (8AM to 8 PM)
+1. The number of crimes in Raleigh per district in descending order
 ## Answers to Exploring the Data
 
 1. 60515 with query: `SELECT COUNT(*) FROM raleigh_police_incidents WHERE case_number is null;`
@@ -85,3 +86,43 @@ SELECT COUNT(*), EXTRACT(DOW from reported_date ) as dayOfWeek FROM raleigh_poli
 ```
 1. 129256 `SELECT COUNT(*) FROM (select extract(hour from reported_date) as rhour from raleigh_police_incidents WHERE extract(hour from reported_date) > 7 AND extract(hour from reported_date) < 21) t;`
 1. 108974  `SELECT COUNT(*) FROM (select extract(hour from reported_date) as rhour from raleigh_police_incidents WHERE extract(hour from reported_date) < 8 OR extract(hour from reported_date) > 20) t;`
+1. `SELECT COUNT(*), district FROM raleigh_police_incidents WHERE city ilike 'raleigh' GROUP BY district ORDER BY district DESC;` The `ilike` on city is neccessary due to not all city values being uppercase `RALEIGH`. 
+```
+ count | district  
+-------+-----------
+ 50755 | North
+ 50204 | Southeast
+ 40463 | Northeast
+ 36195 | Southwest
+ 33028 | Downtown
+ 27256 | Northwest
+   245 | 
+(7 rows)
+```
+
+## Query Plans and optimizations:
+
+Consider the two queries: 
+1. `SELECT COUNT(*), district FROM raleigh_police_incidents WHERE city ilike 'raleigh' GROUP BY district ORDER BY district DESC;` 
+1. `SELECT COUNT(*), district FROM raleigh_police_incidents WHERE LOWER(city) = 'raleigh' GROUP BY district ORDER BY district DESC;`
+
+At a first glance I would have expected #2 to be most efficient since a standard approach to avoiding `ilike` is `LOWER(columnName) like`, but let's look at the explain analyze results of the two queries below. For a quick primer on EXPLAIN ANALYZE check out the postgres resource [here](https://www.postgresql.org/docs/10/using-explain.html).
+
+![ILIKE query on dataset](/ilike-query.png)
+![LOWER(columnName) query on dataset](/lower-query.png)
+
+You should notice the following differences:
+- The `LOWER` query is more expensive and consequently slower than the `ILIKE` query.
+- The child plan node is very similar, but the `LOWER` query actually does a disk merge on the results, whereas the `ILIKE` query is able to keep the entire merge in memory. 
+- The child plan in the `ILIKE` query utilizes a [PARTIAL HASHAGGREGATE](https://www.postgresql.org/message-id/20150920102707.449cf1c3957d274ff4b3e5c1%40potentialtech.com) for the GROUP BY, whereas the `LOWER` query uses a much slower sequential scan to finalize theq uery.
+- While both queries return the same results, the `ILIKE` query is able to finish around 1000ms slower.
+
+
+
+## Recap
+Having done a similar exercise for Philly, I have to say that Raleigh looks like a pretty safe city to me! I hope that you enjoyed looking through the crime data, found some useful insights, and brushed up on your SQL! 
+
+Helpful Resources:
+- https://thoughtbot.com/blog/reading-an-explain-analyze-query-plan
+- https://www.postgresql.org/docs/10/using-explain.html
+- https://www.postgresql.org/docs/11/planner-optimizer.html
