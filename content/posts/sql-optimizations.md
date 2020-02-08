@@ -6,9 +6,14 @@ keywords = ["sql optimization","sql explain analyze", "Raleigh crime data"]
 draft = false
 +++
 
-## SQL Optimizations on a Raleigh Crime Dataset.
+## Background
 
-In my opinion, SQL is easy to get working initially, but optimizing SQL is a whole different beast. Thankfully, I recently had the chance to optimize a whole bunch of SQL for one of our critical platforms resulting in an over 300% reduction in execution time. While I can't promise the same result for anyone following this article, I do outline some of my learnings below using the most recent Raleigh Crime dataset.
+I've had the pleasure of working on a lot of different projects and while the language may have ranged from Java to Golang, most have communicated with a database using SQL. In the beginning of my career, I viewed SQL as a unfortunate neccessity, [Professor Imilienski](https://en.wikipedia.org/wiki/Tomasz_Imieli%C5%84ski) at Rutgers changed my opinion. His project and lectures showed us how to view the and analyze datasets in a relational database, and how SQL can be used to gather some pretty powerful insights. At the time, I used this new found knowledge to build Phillow, a web application that displayed the safety and quality of an area in Philly was based upon the publically available Philadelphia crime and school data. Now that I live in Raleigh, I thought it would be fun to look through Raleigh's own crime data and hopefully reaffirm my decision to move down from PA. 
+
+
+## Plan of action
+
+I'm going to walk you through how to setup a Postgres docker container, load the Raleigh crime data into it, and then encourage you to write some queries to analyze the data. The answers to the query questions can be found below. One answer showing multiple methods of achieving the same results as well reviewing why the queries provide the same results but have different performance characteristics.
 
 ### Requirements
 - Download the dataset here: http://data-ral.opendata.arcgis.com/datasets/raleigh-police-incidents-nibrs
