@@ -2,7 +2,7 @@ baseurl = "https://christopherdiehl.github.io/"
 languageCode = "en"
 title = "Christopher Diehl's blog"
 theme = "kiss"
-copyright = "&copy; <a href=\"https://github.com/christopherdiehl\">Christopher Diehl</a> 2018"
+copyright = "&copy; <a href=\"https://github.com/christopherdiehl\">Christopher Diehl</a> 2021"
 googleAnalytics = "UA-117461087-1"
 # Number of posts per page
 Paginate = 5
