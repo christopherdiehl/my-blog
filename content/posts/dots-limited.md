@@ -1,7 +1,7 @@
 ---
 title: "Dots Limited"
 date: 2021-11-27T08:02:46-05:00
-draft: true
+draft: false
 keywords:
 - art
 - generative
