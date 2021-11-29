@@ -15,16 +15,16 @@ Like most of the world, I've become more interested in NFTs over the past few mo
 
 Having spent a few hours over the previous weekend learning about generative art using [p5js](https://p5js.org/), I decided to make my own art and learn how to mint NFTs on Opensea! Two birds, one stone. 
 
-I decided to replicate my partner's latest purchase of a dot print for our entryway using [p5js](https://p5js.org/) while lazy minting on Opensea to avoid gas costs. 
+I decided to replicate my partner's latest purchase of a dot print for our entryway using [p5js](https://p5js.org/) while [lazy minting](https://opensea.io/blog/announcements/introducing-the-collection-manager/) on Opensea to avoid gas costs. 
 
-Checkout the finished product below! 
+## Finished Product
 <iframe src='https://opensea.io/collection/dots-limited?embed=true'
         width='100%'
         height='600'
         frameborder='0'
         allowfullscreen></iframe>
 
-Feel free to checkout the project [here](https://opensea.io/collection/dots-limited).  Link not working - try: https://opensea.io/collection/dots-limited 
+Feel free to checkout the project [here](https://opensea.io/collection/dots-limited).  Link not working? Try: https://opensea.io/collection/dots-limited 
 
 #### Disclaimer
 The postings on this site are my own and do not necessarily represent the postings, strategies or opinions of my employer.
