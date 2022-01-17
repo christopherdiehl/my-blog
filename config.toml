@@ -1,8 +1,8 @@
 baseurl = "https://christopherdiehl.github.io/"
 languageCode = "en"
-title = "Christopher Diehl's blog"
+title = "Christopher Diehl"
 theme = "kiss"
-copyright = "&copy; <a href=\"https://github.com/christopherdiehl\">Christopher Diehl</a> 2021"
+copyright = "&copy; <a href=\"https://github.com/christopherdiehl\">Christopher Diehl</a> 2022"
 googleAnalytics = "UA-117461087-1"
 # Number of posts per page
 Paginate = 5
@@ -16,7 +16,7 @@ customCSS = ["css/custom.css"]
 adsense = "" # Adsense ID (ID only, without ca-pub-)
 enableSocial = true # Adds OpenGraph and Twitter cards
 homeTitle = "" # Title for home page
-poweredby = true # Adds powered by hugo and kiss below Copyright
+poweredby = false # Adds powered by hugo and kiss below Copyright
 #related = true # Includes related articles at the bottom of the article
 
 
